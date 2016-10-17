@@ -55,9 +55,16 @@ class Tlv:
         print 'tlv106 val:'+tlv
         
         tlv = TEA.entea_hexstr(tlv, pwdKey)
+       
+        tlvlen = len(tlv)
+        
         tlv = Coder.num2hexstr(len(tlv)/2, 2) + tlv
         tlv = Coder.trim('01 06') + tlv
        
+        print 'tlv title :'+Coder.trim('01 06') + Coder.num2hexstr(len(tlv)/2, 2) 
+         
+        print 'tlv entea index :' + bytes(len(tlv) - tlvlen) +" end "+bytes(tlvlen)  
+         
         return tlv
     @staticmethod
     def tlv116():

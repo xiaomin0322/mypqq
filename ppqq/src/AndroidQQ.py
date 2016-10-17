@@ -311,7 +311,13 @@ class AndroidQQ:
         msg = Coder.num2hexstr(len(msg)/2+4, 4) + msg
 
         packet = msgHeader + msg
+        
+        print 'packSendLoginTlv index :' + bytes(packet.find(packSendLoginTlv)) + '----' + bytes(packet.find(packSendLoginTlv)+len(packSendLoginTlv))
+        
         packet = TEA.entea_hexstr(packet, self.defaultKey)
+
+        print 'packet entea_hexstr content :' +packet
+        
         return packet
     def packSendLoginTlv(self, verifyCode=None):
         if verifyCode == None:
@@ -324,8 +330,9 @@ class AndroidQQ:
             
             print 'packSendLoginTlv tlv106 start ' + bytes(len(tlv))
             
-            tlv += Tlv.tlv106(self.uin, self.server_time, self.pwdMd5, self.tgtKey, self.imei, self.appId, self.pwdKey)
+            tvl106 = Tlv.tlv106(self.uin, self.server_time, self.pwdMd5, self.tgtKey, self.imei, self.appId, self.pwdKey)
             
+            tlv +=tvl106 
             print 'packSendLoginTlv tlv106 end ' + bytes(len(tlv))
             
             tlv += Tlv.tlv116()
@@ -346,6 +353,8 @@ class AndroidQQ:
             tlv += Tlv.tlv194()
             tlv += Tlv.tlv202(self.wifi_name)
             
+            print 'tvl106 index :' + bytes(tlv.find(tvl106)) + '----' + bytes(tlv.find(tvl106)+len(tvl106))
+        
             print 'packSendLoginTlv tlv :'+tlv
             
             tlv = TEA.entea_hexstr(tlv, self.shareKey)
