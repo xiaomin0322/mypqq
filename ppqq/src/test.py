@@ -6,7 +6,7 @@ from Tools import TEA;
 from AndroidQQ import AndroidQQ;
 
 
-
+#¼ÓÃÜ  defaultKey,shareKey,pwdKey  >>«@È¡ tgtkey
 #½âÃÜ defaultKey,shareKey,tgtKey
 
 class test():
