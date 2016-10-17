@@ -284,6 +284,9 @@ class AndroidQQ:
         msgHeader += Coder.num2hexstr(len(self.ksid)/2+4, 4) + self.ksid
         msgHeader += Coder.num2hexstr(len(self.ver)/2+2, 2) + self.ver
         msgHeader = Coder.num2hexstr(len(msgHeader)/2+4, 4) + msgHeader
+        
+        print 'msgHeader len :'+bytes(len(msgHeader))
+        
         #Message
         msg = ''
         msg += Coder.trim('1F 41')
@@ -293,8 +296,14 @@ class AndroidQQ:
         msg += self.randomKey
         msg += Coder.trim('01 02')
         msg += Coder.num2hexstr(len(self.pubKey)/2, 2) + self.pubKey
+        
+        print 'packSendLoginTlv start len : ' + bytes(len(msg))
+        
+        packSendLoginTlv =  self.packSendLoginTlv(verifyCode)
         #TEA加密的TLV
-        msg += self.packSendLoginTlv(verifyCode)
+        msg += packSendLoginTlv
+        
+        print ' packSendLoginTlv end len : ' +bytes(len(msg))
 
         msg += Coder.trim('03')
         msg = Coder.num2hexstr(len(msg)/2+2+1, 2) + msg
@@ -312,7 +321,13 @@ class AndroidQQ:
             #tlv组包
             tlv += Tlv.tlv18(self.uin)
             tlv += Tlv.tlv1(self.uin, self.server_time)
+            
+            print 'packSendLoginTlv tlv106 start ' + bytes(len(tlv))
+            
             tlv += Tlv.tlv106(self.uin, self.server_time, self.pwdMd5, self.tgtKey, self.imei, self.appId, self.pwdKey)
+            
+            print 'packSendLoginTlv tlv106 end ' + bytes(len(tlv))
+            
             tlv += Tlv.tlv116()
             tlv += Tlv.tlv100()
             tlv += Tlv.tlv107()
@@ -330,6 +345,9 @@ class AndroidQQ:
             tlv += Tlv.tlv191()
             tlv += Tlv.tlv194()
             tlv += Tlv.tlv202(self.wifi_name)
+            
+            print 'packSendLoginTlv tlv :'+tlv
+            
             tlv = TEA.entea_hexstr(tlv, self.shareKey)
             return tlv
         else:

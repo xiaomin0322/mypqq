@@ -42,15 +42,22 @@ class Tlv:
         tlv += server_time
         tlv += Coder.trim('00 00 00 00 01')
         tlv += pwdMd5
+        print 'tlv106 start len '+ bytes(len(tlv))
+        print 'tgtKey val:' +tgtKey
         tlv += tgtKey
+        print 'tlv106 end len '+ bytes(len(tlv))
         tlv += Coder.trim('00 00 00 00 01')
         tlv += imei
         tlv += appId
         tlv += Coder.trim('00 00 00 01')
         tlv += Coder.trim('00 00')
+        
+        print 'tlv106 val:'+tlv
+        
         tlv = TEA.entea_hexstr(tlv, pwdKey)
         tlv = Coder.num2hexstr(len(tlv)/2, 2) + tlv
         tlv = Coder.trim('01 06') + tlv
+       
         return tlv
     @staticmethod
     def tlv116():
