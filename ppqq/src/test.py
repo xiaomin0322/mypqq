@@ -5,6 +5,10 @@ from Tools import TEA;
 
 from AndroidQQ import AndroidQQ;
 
+
+
+#Ω‚√‹ defaultKey,shareKey,tgtKey
+
 class test():
     
     
